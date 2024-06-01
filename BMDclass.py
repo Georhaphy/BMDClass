@@ -38,14 +38,13 @@ if img_file is not None:
     y = np.expand_dims(X_submission, 0)
     
     result = model.predict(y)
-    
-    
+    result2 =  [ result[0][0]  if result[0][0] > 0.5 else 1- result[0][0] ]
     
     
     with col1:
         st.write("Predict Osteoporosis" )
     with col2:
-        st.code(f"""{Bone(result[0][0])} """) 
+        st.code(f""" {Bone(result[0][0])} ค่าความเชื่อมั่น {100 * result2[0]:.2f}%""") 
 
 
 
