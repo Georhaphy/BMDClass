@@ -44,7 +44,11 @@ if img_file is not None:
     with col1:
         st.write("Predict Osteoporosis" )
     with col2:
-        st.code(f""" {Bone(result[0][0])} ค่าความเชื่อมั่น {100 * result2[0]:.2f}%""") 
+        if result[0][0] > 0.5 :
+            st.write(f":red[{'Abnormal'}]  ค่าความเชื่อมั่น {100 * result2[0]:.2f}% ")
+        else:
+            st.write(f":green[{'Normal'}]  ค่าความเชื่อมั่น {100 * result2[0]:.2f}% ")
+        #st.code(f""" {Bone(result[0][0])} ค่าความเชื่อมั่น {100 * result2[0]:.2f}%""") 
 
 
 
