@@ -12,13 +12,9 @@ import cv2
 from tensorflow.keras.models import load_model
 
 
-model = load_model('best_model3.h5' ,compile = False)
+model = load_model('best_modelBMDclassnew1.h5' ,compile = False)
 
-def Bone(a):
-    if a > 0.5:
-        return 'Abnormal'
-    else:
-        return 'Normal'
+
 
 st.title("Predict Osteoporosis")
 img_file = st.file_uploader("เปิดไฟล์ภาพ")
@@ -38,16 +34,22 @@ if img_file is not None:
     y = np.expand_dims(X_submission, 0)
     
     result = model.predict(y)
-    result2 =  [ result[0][0]  if result[0][0] > 0.5 else 1- result[0][0] ]
+    Class_answer = np.argmax(result,axis=1 )
+    if Class_answer == 0 :
+        predict = 'Normal'
+    elif Class_answer == 1:
+        predict = 'Osteopenia'
+    elif Class_answer == 2:
+        predict = 'Osteoporosis'
     
     
     with col1:
         st.write("Predict Osteoporosis" )
     with col2:
-        if result[0][0] > 0.5 :
-            st.write(f":red[{'Abnormal'}]  ค่าความเชื่อมั่น {100 * result2[0]:.2f}% ")
+        if predict != 'Normal' :
+            st.write(f":red[{'Abnormal'}]  ค่าความเชื่อมั่น {100 * result[0][Class_answer]:.2f}% ")
         else:
-            st.write(f":green[{'Normal'}]  ค่าความเชื่อมั่น {100 * result2[0]:.2f}% ")
+            st.write(f":green[{'Normal'}]  ค่าความเชื่อมั่น {100 * result[0][Class_answer]:.2f}% ")
         
 
 
